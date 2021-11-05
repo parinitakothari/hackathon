@@ -27,6 +27,7 @@ router.get('/charities/:id', charityController.getCharityById);
 router.get('/charities/funds/:id', charityController.getCharityFundsById);
 router.get('/charities', charityController.getAllCharities);
 router.put('/charities/:id', charityController.updateCharity);
+router.put('/charities/funds/:id', charityController.updateCharityFunds);
 router.delete('/charities/:id', charityController.deleteCharity);
 
 module.exports = router;
