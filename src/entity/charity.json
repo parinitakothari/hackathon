@@ -9,6 +9,10 @@
        "name": { 
           "type": "varchar" 
        }, 
+       "description": { 
+         "type": "varchar",
+         "nullable": true 
+      },
        "createdByUser": { 
           "type": "varchar" 
        }, 
