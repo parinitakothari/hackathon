@@ -3,6 +3,11 @@ var EntitySchema = typeorm.EntitySchema;
 let express = require('express');
 
 function CharityController () {
+
+    const test4Test = async (req, res, next) => {
+        // console.log(connection);
+        return res.status(200).json({ "test": "test" });
+    }
     
     const createCharity = async (req, res) => {
         try {
@@ -110,7 +115,8 @@ function CharityController () {
         getCharityFundsById,
         updateCharity,
         updateCharityFunds,
-        deleteCharity
+        deleteCharity,
+        test4Test
     };
 }
 
