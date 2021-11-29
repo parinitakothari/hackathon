@@ -1,4 +1,3 @@
-<!--- REMOVE THIS COMMENT --->
 
 # ShareCare Charity API
 
