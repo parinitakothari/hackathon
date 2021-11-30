@@ -103,6 +103,7 @@ function CharityController () {
             conn = typeorm.getConnection();
             charityRepo = await conn.getRepository("Charity");
             charity = await charityRepo.delete(parseInt(id));
+            //console.log("Value of charity " + json(charity));
             return res.status(200).json(charity);
         } catch (error) {
             return res.status(500).json({ "error": error.message });

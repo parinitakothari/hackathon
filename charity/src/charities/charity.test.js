@@ -1,6 +1,7 @@
 const CharityController = require('./charity.controller')
 const expressMock = require('@jest-mock/express')
 var typeorm = require("typeorm"); 
+const { json } = require('express');
 var EntitySchema = typeorm.EntitySchema; 
 
 beforeEach(async () => {
@@ -145,7 +146,7 @@ test('Should update a specific charity', async () => {
     expect(outCharities[0]).toStrictEqual(charityToUpdate);
 });
 
-test('Should delete a specific charity', async () => {
+test.only('Should delete a specific charity', async () => {
     
     let charityController = CharityController();
 
@@ -180,23 +181,24 @@ test('Should delete a specific charity', async () => {
         //createdByUser: 'MMR',
         //funds: 140002
     }
-
+ 
     // prepare the mock request and response
-    const req = expressMock.getMockReq({ params: { id: 2 }, body: charityToDelete });
+    const req = expressMock.getMockReq({ params: { id: 2 }, body : charityToDelete });
     const { res, next, mockClear } = expressMock.getMockRes()
 
     await charityController.deleteCharity(req, res);
 
     expect(res.status).toBeCalledWith(200);
+    //console.log("Response status is " + res.status);
     
-    outCharities = await conn.getRepository("Charity").({ id: 1 });
- 
-  //  expect(outCharities.length).toBe(0);
-  //  expect(outCharities[0]).toStrictEqual(charities[0]);
+    outCharities = await conn.getRepository("Charity").find({ id : 1 });
+    //console.log(JSON.stringify(outCharities));
+    expect(outCharities.length).toBe(1);
+    expect(outCharities[0]).toStrictEqual(charities[0]);
 
     outCharities = await conn.getRepository("Charity").find({ id: 2 });
-    console.log("point 1: %d", outCharities);
-  //  expect(outCharities.length).toBe(0);
-  //  expect(outCharities[0]).toStrictEqual(charityToUpdate);
+    //console.log("point 1: %d", outCharities);
+    expect(outCharities.length).toBe(0);
+    //expect(outCharities[0]).toStrictEqual(charityToUpdate);
 
 });
