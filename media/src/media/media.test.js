@@ -51,9 +51,46 @@ test('Should create a new media ', async () => {
 });
 
 test('Should return a specific media', async () => {
-    
-    // TO BE IMPLEMENTED
+    let mediaController = MediaController();
 
+    const media = [
+        {
+            id: 1,
+            url: "www.somemedia.com"
+        },
+        {
+            id: 2,
+            url: "www.othermedia.com"
+        }
+    ];
+
+    // prepare the reality in the database
+    const conn = typeorm.getConnection();
+    mediaRepo = await conn.getRepository("Media")
+    result = await mediaRepo.create(media);
+    await mediaRepo.save(result);
+
+    const mediaToReturn = {
+        id: 2,
+        url: "www.othermedia.com"
+    }
+
+    // prepare the mock request and response
+    const req = expressMock.getMockReq({ params: { id: 2 }, body: mediaToReturn });
+    const { res, next, mockClear } = expressMock.getMockRes()
+
+    await mediaController.getMediaById(req, res);
+
+    expect(res.status).toBeCalledWith(200);
+    
+    outMedia = await conn.getRepository("Media").find({ id: 1 });
+    expect(outMedia.length).toBe(1);
+    expect(outMedia[0]).toStrictEqual(media[0]);
+
+    outMedia = await conn.getRepository("Media").find({ id: 2 });
+    expect(outMedia.length).toBe(1);
+    expect(outMedia[0]).toStrictEqual(mediaToReturn);
+  
 });
 
 test('Should update a specific media', async () => {
@@ -99,7 +136,45 @@ test('Should update a specific media', async () => {
 });
 
 test('Should delete a specific media', async () => {
+    let mediaController = MediaController();
+
+    const media = [
+        {
+            id: 1,
+            url: "www.somemedia.com"
+        },
+        {
+            id: 2,
+            url: "www.othermedia.com"
+        }
+    ];
+
+    // prepare the reality in the database
+    const conn = typeorm.getConnection();
+    mediaRepo = await conn.getRepository("Media")
+    result = await mediaRepo.create(media);
+    await mediaRepo.save(result);
+
+    const mediaToDelete = {
+        id: 2,
+        url: "www.othermedia.com"
+    }
+
+    // prepare the mock request and response
+    const req = expressMock.getMockReq({ params: { id: 2 }, body: mediaToDelete });
+    const { res, next, mockClear } = expressMock.getMockRes()
+
+    await mediaController.deleteMedia(req, res);
+
+    expect(res.status).toBeCalledWith(200);
     
-    // TO BE IMPLEMENTED
+    outMedia = await conn.getRepository("Media").find({ id: 1 });
+    expect(outMedia.length).toBe(1);
+    expect(outMedia[0]).toStrictEqual(media[0]);
+
+    outMedia = await conn.getRepository("Media").find({ id: 2 });
+    expect(outMedia.length).toBe(0);
+  //  expect(outMedia[0]).toStrictEqual(mediaToDelete);
+ 
     
 });
