@@ -147,6 +147,53 @@ test('Should update a specific charity', async () => {
 
 test('Should delete a specific charity', async () => {
     
-    // TO BE IMPLEMENTED
+    let charityController = CharityController();
+
+    const charities = [
+        {
+            id: 1,
+            name: 'Rich Charity',
+            description: 'Rich rich charity helps everybody',
+            createdByUser: 'Mark Rich',
+            funds: 340000
+        },
+        {
+            id: 2,
+            name: 'Medium Rich Charity',
+            description: 'Medium rich charity helps everybody',
+            createdByUser: 'Mark Medium Rich',
+            funds: 140000
+        }
+    ];
+
+    // prepare the reality in the database
+    const conn = typeorm.getConnection();
+    charityRepo = await conn.getRepository("Charity")
+    result = await charityRepo.create(charities);
+    await charityRepo.save(result);
+
+    const charityToUpdate = {
+        id: 2,
+        name: 'MRC',
+        description: 'MRC helps everybody',
+        createdByUser: 'MMR',
+        funds: 140002
+    }
+
+    // prepare the mock request and response
+    const req = expressMock.getMockReq({ params: { id: 2 }, body: charityToUpdate });
+    const { res, next, mockClear } = expressMock.getMockRes()
+
+    await charityController.deleteCharity(req, res);
+
+    expect(res.status).toBeCalledWith(200);
     
+    outCharities = await conn.getRepository("Charity").find({ id: 1 });
+    expect(outCharities.length).toBe(1);
+    expect(outCharities[0]).toStrictEqual(charities[0]);
+
+    outCharities = await conn.getRepository("Charity").find({ id: 2 });
+    expect(outCharities.length).toBe(1);
+    expect(outCharities[0]).toStrictEqual(charityToUpdate);
+
 });
