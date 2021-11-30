@@ -70,10 +70,10 @@ test('Should return a specific media', async () => {
     result = await mediaRepo.create(media);
     await mediaRepo.save(result);
 
-    const mediaToReturn = {
+    const mediaToReturn = [{
         id: 2,
         url: "www.othermedia.com"
-    }
+    }];
 
     // prepare the mock request and response
     const req = expressMock.getMockReq({ params: { id: 2 }, body: mediaToReturn });
@@ -82,14 +82,15 @@ test('Should return a specific media', async () => {
     await mediaController.getMediaById(req, res);
 
     expect(res.status).toBeCalledWith(200);
+    expect(res.json).toBeCalledWith(mediaToReturn);
     
-    outMedia = await conn.getRepository("Media").find({ id: 1 });
+/*     outMedia = await conn.getRepository("Media").find({ id: 1 });
     expect(outMedia.length).toBe(1);
     expect(outMedia[0]).toStrictEqual(media[0]);
 
     outMedia = await conn.getRepository("Media").find({ id: 2 });
     expect(outMedia.length).toBe(1);
-    expect(outMedia[0]).toStrictEqual(mediaToReturn);
+    expect(outMedia[0]).toStrictEqual(mediaToReturn); */
   
 });
 
