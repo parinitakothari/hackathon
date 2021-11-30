@@ -49,19 +49,19 @@ function PostController () {
         }
     }
 
-    // const getPostById = async (req, res) => {
+     const getPostById = async (req, res) => {
 
-    //     const { id } = req.params;
+         const { id } = req.params;
 
-    //     try {
-    //         conn = typeorm.getConnection();
-    //         postRepo = await conn.getRepository("Post");
-    //         post = await postRepo.find({ id: parseInt(id) });
-    //         return res.status(200).json(post);
-    //     } catch (error) {
-    //         return res.status(500).json({ "error": error.message });
-    //     }
-    // }
+         try {
+             conn = typeorm.getConnection();
+             postRepo = await conn.getRepository("Post");
+             post = await postRepo.find({ id: parseInt(id) });
+             return res.status(200).json(post);
+         } catch (error) {
+             return res.status(500).json({ "error": error.message });
+         }
+     }
 
     // const getCharityFundsById = async (req, res) => {
 
@@ -130,7 +130,7 @@ function PostController () {
         updatePost,
         updatePostFunds,
         deletePost,
-        //getPostById
+        getPostById
     };
 }
 

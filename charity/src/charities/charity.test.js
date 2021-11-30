@@ -121,13 +121,18 @@ test('Should return a specific charity', async () => {
         description: 'Medium rich charity helps everybody',
         createdByUser: 'Mark Medium Rich',
         funds: 140000
-    }]
+    }];
+
     const req = expressMock.getMockReq({ params: { id: 2 }});
-    const { res, next, mockClear } = expressMock.getMockRes()
+    const { res, next, mockClear } = expressMock.getMockRes();
 
     await charityController.getCharityById(req, res);
     expect(res.status).toBeCalledWith(200);
-    expect(res.json).toBeCalledWith(charityToFind); 
+    expect(res.json).toBeCalledWith(charityToFind);
+
+    /* outCharities = await conn.getRepository("Charity").find({ id: 2 });
+    expect(outCharities.length).toBe(1);
+    expect(outCharities[0]).toStrictEqual(charityToFind[0]);  */
 
 });
 
@@ -211,11 +216,6 @@ test('Should delete a specific charity', async () => {
 
     const charityToDelete = {
         id: 2
-        //,
-        //name: 'MRC',
-        //description: 'MRC helps everybody',
-        //createdByUser: 'MMR',
-        //funds: 140002
     }
 
     // prepare the mock request and response
@@ -227,13 +227,10 @@ test('Should delete a specific charity', async () => {
     expect(res.status).toBeCalledWith(200);
     
     outCharities = await conn.getRepository("Charity").find({ id: 1 });
- 
-  //  expect(outCharities.length).toBe(0);
-  //  expect(outCharities[0]).toStrictEqual(charities[0]);
+    expect(outCharities.length).toBe(1);
+    expect(outCharities[0]).toStrictEqual(charities[0]);
 
     outCharities = await conn.getRepository("Charity").find({ id: 2 });
-    console.log("point 1: %d", outCharities);
-  //  expect(outCharities.length).toBe(0);
-  //  expect(outCharities[0]).toStrictEqual(charityToUpdate);
+    expect(outCharities.length).toBe(0);
 
 });

@@ -67,6 +67,64 @@ test('Should create a new post ', async () => {
     });    
 });
 
+test('Should return a specific post', async () => {
+
+    let postController = PostController();
+
+    const posts = [
+        {
+            id: 1,
+            charityId: 1,
+            charityName: 'One charity',
+            mediaId: 1,
+            userId: 1,
+            userName: 'Marko Maric',
+            description: 'blablabla',
+            funds: 5764.2
+        },
+        {
+            id: 2,
+            charityId: 2,
+            charityName: 'Some Charity',
+            mediaId: 2,
+            userId: 2,
+            userName: 'Pero Peric',
+            description: 'Some description',
+            funds: 34.2
+        }
+    ];
+
+    // prepare the reality in the database
+    const conn = typeorm.getConnection();
+    postRepo = await conn.getRepository("Post")
+    result = await postRepo.create(posts);
+    await postRepo.save(result);
+
+    
+    const postToFind = [{
+        id: 1,
+        charityId: 1,
+        charityName: 'One charity',
+        mediaId: 1,
+        userId: 1,
+        userName: 'Marko Maric',
+        description: 'blablabla',
+        funds: 5764.2
+    }];
+
+    const req = expressMock.getMockReq({ params: { id: 1 } , body : postToFind });
+    const { res, next, mockClear } = expressMock.getMockRes();
+
+    await postController.getPostById(req, res);
+    expect(res.status).toBeCalledWith(200);
+    expect(res.json).toBeCalledWith(postToFind);
+
+   /*  outPosts = await conn.getRepository("Post").find({ id: 2 });
+    expect(outPosts.length).toBe(1);
+    expect(outPosts[0]).toStrictEqual(posts[0]);  */
+
+});
+
 test('Should update a specific post', async () => {
     let postController = PostController();
 
@@ -171,13 +229,6 @@ test('Should delete a specific post', async () => {
 
     const postToDelete = {
         id: 2
-    /*  charityId: 2,
-        charityName: 'S C',
-        mediaId: 2,
-        userId: 2,
-        userName: 'P P',
-        description: 'S d',
-        funds: 345.5 */
     }
 
     // prepare the mock request and response
