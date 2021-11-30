@@ -2,7 +2,7 @@
 const PostController = require('./post.controller')
 const expressMock = require('@jest-mock/express')
 var typeorm = require("typeorm"); 
-const { post } = require('./post.router');
+//const { post } = require('./post.router');
 const { CustomRepositoryCannotInheritRepositoryError } = require('typeorm');
 var EntitySchema = typeorm.EntitySchema; 
 
