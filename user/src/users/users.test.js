@@ -102,7 +102,48 @@ test('Should list all users', async () => {
 
 test('Should return a specific user', async () => {
     
-    // TO BE IMPLEMENTED
+    let usersController = UsersController();
+
+    const users = [
+        {
+            id: 1,
+            firstName: 'Rich',
+            lastName: 'Marko',
+            eMail: 'hello@prisma.io',
+            password: 'blablabla',
+            age: 34
+        },
+        {
+            id: 2,
+            firstName: 'Gillian',
+            lastName: 'Smith',
+            eMail: 'hello@prisma.io',
+            password: 'blablabla',
+            age: 22
+        }
+    ];
+
+    // prepare the reality in the database
+    const conn = typeorm.getConnection();
+    userRepo = await conn.getRepository("User")
+    result = await userRepo.create(users);
+    await userRepo.save(result);
+    
+    const userToFind = [{
+        id: 1,
+        firstName: 'Rich',
+        lastName: 'Marko',
+        eMail: 'hello@prisma.io',
+        password: 'blablabla',
+        age: 34
+    }];
+
+    const req = expressMock.getMockReq({ params : {id : 1} });
+    const { res, next, mockClear } = expressMock.getMockRes()
+
+    await usersController.getUserById(req, res);
+    expect(res.status).toBeCalledWith(200);
+    expect(res.json).toBeCalledWith(userToFind);
 
 });
 
@@ -165,6 +206,53 @@ test('Should update a specific user', async () => {
 
 test('Should delete a specific user', async () => {
     
-    // TO BE IMPLEMENTED
+    let usersController = UsersController();
+
+    const users = [
+        {
+            id: 1,
+            firstName: 'Rich',
+            lastName: 'Marko',
+            eMail: 'hello@prisma.io',
+            password: 'blablabla',
+            age: 34
+        },
+        {
+            id: 2,
+            firstName: 'Gillian',
+            lastName: 'Smith',
+            eMail: 'hello@prisma.io',
+            password: 'blablabla',
+            age: 22
+        }
+    ];
+
+    // prepare the reality in the database
+    const conn = typeorm.getConnection();
+    userRepo = await conn.getRepository("User")
+    result = await userRepo.create(users);
+    await userRepo.save(result);
+
+    const userToDelete = {
+        id: 2,
+        firstName: 'Gillian',
+        lastName: 'Smith',
+        eMail: 'hello@prisma.io',
+        password: 'blablabla',
+        age: 22
+    }
+
+    const req = expressMock.getMockReq({ params: { id: 2 }, body: userToDelete });
+    const { res, next, mockClear } = expressMock.getMockRes()
+
+    await usersController.deleteUser(req, res);
+
+    expect(res.status).toBeCalledWith(200);
     
+    outUsers = await conn.getRepository("User").find({ id: 1 });
+    expect(outUsers.length).toBe(1);
+    expect(outUsers[0]).toStrictEqual(users[0]);
+
+    outUsers = await conn.getRepository("User").find({ id: 2 });
+    expect(outUsers.length).toBe(0);    
 });
