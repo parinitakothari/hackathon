@@ -168,7 +168,7 @@ test('Should delete a specific media', async () => {
     await mediaController.deleteMedia(req, res);
 
     expect(res.status).toBeCalledWith(200);
-    
+
     outMedia = await conn.getRepository("Media").find({ id: 1 });
     expect(outMedia.length).toBe(1);
     expect(outMedia[0]).toStrictEqual(media[0]);
