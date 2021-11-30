@@ -115,16 +115,20 @@ test('Should return a specific charity', async () => {
     result = await charityRepo.create(charities);
     await charityRepo.save(result);
     
-    const req = expressMock.getMockReq({ params: { id: 2 },});
+    const charityToFind = [{
+        id: 2,
+        name: 'Medium Rich Charity',
+        description: 'Medium rich charity helps everybody',
+        createdByUser: 'Mark Medium Rich',
+        funds: 140000
+    }]
+    const req = expressMock.getMockReq({ params: { id: 2 }});
     const { res, next, mockClear } = expressMock.getMockRes()
 
     await charityController.getCharityById(req, res);
     expect(res.status).toBeCalledWith(200);
+    expect(res.json).toBeCalledWith(charityToFind); 
 
-    outCharities = await conn.getRepository("Charity").find({ id: 2 });
-    expect(outCharities.length).toBe(1);
-    expect(outCharities[0]).toStrictEqual(charities[0]);
-    console.log("*******" + outCharities)  
 });
 
 test('Should update a specific charity', async () => {
