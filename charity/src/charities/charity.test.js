@@ -164,15 +164,12 @@ test('Should return a specific charity fund', async () => {
     result = await charityRepo.create(charities);
     await charityRepo.save(result);
     
-    const charityToFind = [{
-        id: 2,
-        name: 'Medium Rich Charity',
-        description: 'Medium rich charity helps everybody',
-        createdByUser: 'Mark Medium Rich',
+    const charityToFind = {
         funds: 140000
-    }];
+    };
 
     const req = expressMock.getMockReq({ params: { id: 2 }});
+    //const req = expressMock.getMockReq({ });
     const { res, next, mockClear } = expressMock.getMockRes();
 
     await charityController.getCharityFundsById(req, res);
@@ -266,10 +263,10 @@ test('Should update a specific charity fund', async () => {
 
     const charityToUpdate = {
         id: 2,
-        name: 'MRC',
-        description: 'MRC helps everybody',
-        createdByUser: 'MMR',
-        funds: 140002
+        name: 'Medium Rich Charity',
+        description: 'Medium rich charity helps everybody',
+        createdByUser: 'Mark Medium Rich',
+        funds: 140001
     }
 
     // prepare the mock request and response
