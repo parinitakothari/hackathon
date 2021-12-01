@@ -356,3 +356,158 @@ test('Should delete a specific post', async () => {
     expect(outPosts.length).toBe(0);
     
 });
+
+test('Should return all the Post', async () => {
+    let postController = PostController();
+
+    const posts = [
+        {
+            id: 1,
+            charityId: 1,
+            charityName: 'One charity',
+            mediaId: 1,
+            userId: 1,
+            userName: 'Marko Maric',
+            description: 'blablabla',
+            funds: 5764.2
+        },
+        {
+            id: 2,
+            charityId: 2,
+            charityName: 'Some Charity',
+            mediaId: 2,
+            userId: 2,
+            userName: 'Pero Peric',
+            description: 'Some description',
+            funds: 34.2
+        },
+        {
+            id: 3,
+            charityId: 3,
+            charityName: 'Benevolent Charity',
+            mediaId: 3,
+            userId: 3,
+            userName: 'Pikalo Paputo',
+            description: 'Best Charity',
+            funds: 63.5
+        }
+    ];
+
+    // prepare the reality in the database
+    const conn = typeorm.getConnection();
+    postRepo = await conn.getRepository("Post")
+    result = await postRepo.create(posts);
+    await postRepo.save(result);
+
+    const postsToReturn = [
+        {
+            id: 1,
+            charityId: 1,
+            charityName: 'One charity',
+            mediaId: 1,
+            userId: 1,
+            userName: 'Marko Maric',
+            description: 'blablabla',
+            funds: 5764.2
+        },
+        {
+            id: 2,
+            charityId: 2,
+            charityName: 'Some Charity',
+            mediaId: 2,
+            userId: 2,
+            userName: 'Pero Peric',
+            description: 'Some description',
+            funds: 34.2
+        },
+        {
+            id: 3,
+            charityId: 3,
+            charityName: 'Benevolent Charity',
+            mediaId: 3,
+            userId: 3,
+            userName: 'Pikalo Paputo',
+            description: 'Best Charity',
+            funds: 63.5
+        }
+    ];
+
+    const req = expressMock.getMockReq({});
+    const { res, next, mockClear } = expressMock.getMockRes();
+
+    await postController.getTopPostsByFunding(req, res);
+    expect(res.status).toBeCalledWith(200);
+ //   expect(res.json).toBeCalledWith(postsToReturn);
+  
+    /*  outPosts = await conn.getRepository("Post").find({ id: 2 });
+    expect(outPosts.length).toBe(1);
+    expect(outPosts[0]).toStrictEqual(posts[0]);  */
+
+});
+
+
+test('Should update a Post Funds', async () => {
+    let postController = PostController();
+
+    const posts = [
+        {
+            id: 1,
+            charityId: 1,
+            charityName: 'One charity',
+            mediaId: 1,
+            userId: 1,
+            userName: 'Marko Maric',
+            description: 'blablabla',
+            funds: 5764.2
+        },
+        {
+            id: 2,
+            charityId: 2,
+            charityName: 'Some Charity',
+            mediaId: 2,
+            userId: 2,
+            userName: 'Pero Peric',
+            description: 'Some description',
+            funds: 34.2
+        }
+    ];
+
+    // prepare the reality in the database
+    const conn = typeorm.getConnection();
+    postRepo = await conn.getRepository("Post")
+    result = await postRepo.create(posts);
+    await postRepo.save(result);
+
+    outPosts = await conn.getRepository("Post").find();
+
+    const postToUpdate =         
+    {
+        id: 2,
+        funds: 60.00
+    }
+
+    const postToCheck =     {
+        id: 2,
+        charityId: 2,
+        charityName: 'Some Charity',
+        mediaId: 2,
+        userId: 2,
+        userName: 'Pero Peric',
+        description: 'Some description',
+        funds: 60.00
+    }
+    
+    // prepare the mock request and response
+    const req = expressMock.getMockReq({ params: { id: 2 }, body: postToUpdate });
+    const { res, next, mockClear } = expressMock.getMockRes()
+
+    await postController.updatePost(req, res);
+    
+    expect(res.status).toBeCalledWith(200);
+    
+    outPosts = await conn.getRepository("Post").find();
+    expect(outPosts.length).toBe(2);
+    expect(outPosts[0]).toStrictEqual(posts[0]);
+    expect(outPosts[1]).toStrictEqual(postToCheck);
+
+});
