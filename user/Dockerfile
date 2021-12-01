@@ -2,7 +2,7 @@
 
 # FROM node:11.13.0-alpine
 
-FROM node:latest
+FROM node:17-alpine
 
 # create destination directory
 # RUN mkdir -p /usr/src/user-app
@@ -17,11 +17,11 @@ COPY . .
 RUN npm install
 
 # set the application environment variables
-ENV DATABASE_HOST = "localhost"
-ENV DATABASE_PORT = "5432"
-ENV DATABASE_NAME = "user"
-ENV DATABASE_USERNAME = "postgres"
-ENV DATABASE_PASSWORD = "foo"
+ENV DATABASE_HOST="postgres"
+ENV DATABASE_PORT="5432"
+ENV DATABASE_NAME="user"
+ENV DATABASE_USERNAME="postgres"
+ENV DATABASE_PASSWORD="foo"
 
 # build necessary, even if no static files are needed,
 # since it builds the server as well
