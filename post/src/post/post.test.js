@@ -438,7 +438,7 @@ test('Should return all the Post', async () => {
     await postController.getAllPosts(req, res);
   
     expect(res.status).toBeCalledWith(500);
-    console.log(res.status)
+  //  console.log(res.status)
     expect(posts).toStrictEqual(postsToReturn);
   
     /*  outPosts = await conn.getRepository("Post").find({ id: 2 });
