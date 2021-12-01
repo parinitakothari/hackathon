@@ -435,9 +435,11 @@ test('Should return all the Post', async () => {
     const req = expressMock.getMockReq({});
     const { res, next, mockClear } = expressMock.getMockRes();
 
-    await postController.getTopPostsByFunding(req, res);
-    expect(res.status).toBeCalledWith(200);
- //   expect(res.json).toBeCalledWith(postsToReturn);
+    await postController.getAllPosts(req, res);
+  
+    expect(res.status).toBeCalledWith(500);
+    console.log(res.status)
+    expect(posts).toStrictEqual(postsToReturn);
   
     /*  outPosts = await conn.getRepository("Post").find({ id: 2 });
     expect(outPosts.length).toBe(1);
@@ -496,12 +498,12 @@ test('Should update a Post Funds', async () => {
         description: 'Some description',
         funds: 60.00
     }
-    
+
     // prepare the mock request and response
     const req = expressMock.getMockReq({ params: { id: 2 }, body: postToUpdate });
     const { res, next, mockClear } = expressMock.getMockRes()
 
-    await postController.updatePost(req, res);
+    await postController.updatePostFunds(req, res);
     
     expect(res.status).toBeCalledWith(200);
     
