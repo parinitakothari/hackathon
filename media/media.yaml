@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+ name: media-pod
+ labels:
+   app: media
+spec:
+  app: media-api
+    containers:
+        - name: media-api
+          image: gcr.io/lloyds-hackathon-team-4/media-api:v1.0
+          ports:
+            - containerPort: 8080
