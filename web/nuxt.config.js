@@ -48,6 +48,10 @@ export default {
   axios: {
     proxy: true,
   },
+  
+  env: {
+    baseUrl: process.env.BASE_URL || 'http://localhost:3000'
+  }
 
   // INFO: Make sure to set environment variable BASE_URL to the URL of your API backend.  
   proxy: {
