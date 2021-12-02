@@ -1,13 +1,54 @@
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
- name: media-pod
- labels:
-   app: media
+  name: media-pod
 spec:
+   replicas: 2
+   selector:
+    matchLabels: 
+     app: media-api
+   template:
+    metadata:
+     labels:
+      app: media-api
+    spec:  
+     containers:
+     - name: media-api
+       image: gcr.io/lloyds-hackathon-team-4/media-api:1.0
+       ports:
+       - containerPort : 3000
+       env:
+       - name: DATABASE_USERNAME
+         valueFrom:
+          secretKeyRef:
+           name: databasesecrets 
+           key: username
+       - name: DATABASE_PASSWORD
+         valueFrom:
+          secretKeyRef:
+           name: databasesecrets
+           key: password
+       - name: DATABASE_NAME
+         valueFrom:
+          secretKeyRef:
+           name: databasesecrets
+           key: database
+       - name: DATABASE_HOST
+         value: "172.29.96.3"
+       - name: DATABASE_PORT
+         value: "5432"
+       imagePullPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:  
+ name: media-svc
+spec:
+ selector: 
   app: media-api
-    containers:
-        - name: media-api
-          image: gcr.io/lloyds-hackathon-team-4/media-api:v1.0
-          ports:
-            - containerPort: 3000
+ ports:    
+ - port: 80
+   targetPort: 3000
+ type: ClusterIP
+
+
