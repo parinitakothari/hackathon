@@ -1,13 +1,64 @@
 apiVersion: v1
 kind: Pod
 metadata:
- name: user-pod
- labels:
-   app: user
+  name: user-pod
+  labels:
+    app: user
 spec:
-  app: user-api
-    containers:
+   serviceAccountName: serviceaccount
+   containers:
         - name: user-api
-          image: gcr.io/lloyds-hackathon-team-4/user-api:v1.0
+          image: gcr.io/lloyds-hackathon-team-4/user-api
           ports:
-            - containerPort: 3000
+            - containerPort : 3000
+          env:
+          - name: DATABASE_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: databasesecrets 
+                key: username
+          - name: DATABASE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: databasesecrets
+                key: password
+          - name: DATABASE_NAME
+            valueFrom:
+              secretKeyRef:
+                name: databasesecrets
+                key: database
+          - name: DATABASE_HOST
+            value: "postgres"
+          - name: DATABASE_PORT
+            value: "5432"
+        - name: cloud-sql-proxy
+          # It is recommended to use the latest version of the Cloud SQL proxy
+          # Make sure to update on a regular schedule!
+          image: gcr.io/cloudsql-docker/gce-proxy:1.17
+          command:
+            - "/cloud_sql_proxy"
+
+            # If connecting from a VPC-native GKE cluster, you can use the
+            # following flag to have the proxy connect over private IP
+            # - "-ip_address_types=PRIVATE"
+
+            # Replace DB_PORT with the port the proxy should listen on
+            # Defaults: MySQL: 3306, Postgres: 5432, SQLServer: 1433
+            - "-instances=lloyds-hackathon-team-4:europe-west2:postgres=tcp:5432"
+          securityContext:
+            # The default Cloud SQL proxy image runs as the
+            # "nonroot" user and group (uid: 65532) by default.
+            runAsNonRoot: true
+          # Resource configuration depends on an application's requirements. You
+          # should adjust the following values based on what your application
+          # needs. For details, see https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+          resources:
+            requests:
+              # The proxy's memory use scales linearly with the number of active
+              # connections. Fewer open connections will use less memory. Adjust
+              # this value based on your application's requirements.
+              memory: "2Gi"
+              # The proxy's CPU use scales linearly with the amount of IO between
+              # the database and the application. Adjust this value based on your
+              # application's requirements.
+              cpu:    "1"
