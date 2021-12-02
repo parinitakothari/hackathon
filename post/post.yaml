@@ -36,7 +36,7 @@ spec:
        - name: DATABASE_HOST
          value: "172.29.96.3"
        - name: DATABASE_PORT
-         value: "5432
+         value: "5432"
        imagePullPolicy: Always
 ---
 apiVersion: v1
