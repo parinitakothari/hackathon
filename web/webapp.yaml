@@ -15,6 +15,9 @@ spec:
      containers:
      - name: webapp
        image: gcr.io/lloyds-hackathon-team-4/webapp:1.0
+       env:
+       - name: BASE_URL
+         value: "default-http-backend:80"
        ports:
        - containerPort : 3000
        imagePullPolicy: Always

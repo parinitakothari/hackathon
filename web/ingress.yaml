@@ -1,0 +1,36 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: minimal-ingress
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /users
+        pathType: Prefix
+        backend:
+          service:
+            name: user-svc
+            port:
+              number: 80
+      - path: /posts
+        pathType: Prefix
+        backend:
+          service:
+            name: post-svc
+            port:
+              number: 80
+      - path: /media
+        pathType: Prefix
+        backend:
+          service:
+            name: media-svc
+            port:
+              number: 80
+      - path: /charities
+        pathType: Prefix
+        backend:
+          service:
+            name: charity-svc
+            port:
+              number: 80
