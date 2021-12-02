@@ -34,7 +34,7 @@ spec:
            name: databasesecrets
            key: database
        - name: DATABASE_HOST
-         value: "postgres"
+         value: "172.29.96.3"
        - name: DATABASE_PORT
          value: "5432"
        imagePullPolicy: Always
