@@ -10,4 +10,4 @@ spec:
         - name: user-api
           image: gcr.io/lloyds-hackathon-team-4/user-api:v1.0
           ports:
-            - containerPort: 8080
+            - containerPort: 3000

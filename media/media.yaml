@@ -10,4 +10,4 @@ spec:
         - name: media-api
           image: gcr.io/lloyds-hackathon-team-4/media-api:v1.0
           ports:
-            - containerPort: 8080
+            - containerPort: 3000

@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Pod
 metadata:
- name: post-pod
+ name: charity-pod
  labels:
-   app: post
+   app: charity
 spec:
-  app: post-api
+  app: charity-api
     containers:
-        - name: user-api
-          image: gcr.io/lloyds-hackathon-team-4/post-api:v1.0
+        - name: charity-api
+          image: gcr.io/lloyds-hackathon-team-4/charity-api:v1.0
           ports:
-            - containerPort: 8080
+            - containerPort: 3000
