@@ -78,11 +78,11 @@ jobs:
         docker push "gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA"
 
     # Run Test cases
-    - name: Test
-      run: |-
-        ./web npm test 
+    #- name: Test
+    #  run: |-
+    #    ./web npm test 
     
     # Run Sonarqube cases
-    - name: Test
-      run: |-
-        ./web npx jest --coverage
+    #- name: Sonarqube
+    #  run: |-
+    #    ./web npx jest --coverage
