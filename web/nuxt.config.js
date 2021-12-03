@@ -48,10 +48,6 @@ export default {
   axios: {
     proxy: true,
   },
-  
-  env: {
-    baseUrl: process.env.BASE_URL || 'http://localhost:3000'
-  }
 
   env: {
     baseUrl: process.env.BASE_URL || 'http://localhost:3000'
