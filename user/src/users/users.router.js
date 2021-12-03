@@ -22,6 +22,7 @@ const userController = UserController();
 
 const router = Router();
 
+router.get('/users/healthcheck', (req, res) => { return res.status(200).json({ "Status": "Healthy"})});
 router.post('/users', userController.createUser);
 router.get('/users/:id', userController.getUserById);
 router.get('/users', userController.getAllUsers);
