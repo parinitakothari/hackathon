@@ -1,22 +1,24 @@
-FROM node:12-alpine
 
-#ENV BASE_URL="default-http-backend:80"
+FROM node:latest
 
 # create destination directory
-#RUN mkdir -p /app
-#WORKDIR /app
-
-#RUN mkdir -p /usr/src/nuxt-app
-#WORKDIR /usr/src/nuxt-app
+#RUN mkdir -p /usr/src/user-app
+WORKDIR /app
 
 # update and install dependency
 RUN apk update && apk upgrade
 RUN apk add git
 
 # copy the app, note .dockerignore
-COPY . /app
-WORKDIR /app
+COPY . .
 RUN npm install
+
+# set env nariables
+ENV DATABASE_HOST = "local host"
+ENV DATABASE_PORT = "5432"
+ENV DATABASE_NAME = "user"
+ENV DATABASE_USERNAME = "postgres"
+ENV DATABASE_PASSWORD = "foo"
 
 # build necessary, even if no static files are needed,
 # since it builds the server as well
@@ -26,9 +28,15 @@ RUN npm run build
 EXPOSE 3000
 
 # set app serving to permissive / assigned
-#ENV NUXT_HOST=0.0.0.0
+# ENV USER_HOST=0.0.0.0
 # set app port
-#ENV NUXT_PORT=3000
+# ENV USER_PORT=5000
 
 # start the app
-CMD [ "npm", "start" ]
+CMD [ "node", "/src/index.js" ]
+
+
+
+
+
+

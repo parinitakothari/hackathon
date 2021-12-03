@@ -1,0 +1,1 @@
+sudo docker run -d --name=postgres --rm --env=POSTGRES_PASSWORD=foo --env=POSTGRES_DB=user \--volume=$(pwd)/user.sql:/docker-entrypoint-initdb.d/user.sql \--volume=$(pwd):/repo \postgres:latest -c log_statement=all

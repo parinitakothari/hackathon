@@ -6,8 +6,11 @@ const { post } = require('./post.router');
 const { CustomRepositoryCannotInheritRepositoryError } = require('typeorm');
 var EntitySchema = typeorm.EntitySchema; 
 
+console.log("Point 1");
+
 beforeEach(async () => {
-    return await typeorm.createConnection({
+	console.log ("Before each");
+	return await typeorm.createConnection({
         type: "sqlite",
         database: ":memory:",
         dropSchema: true,
@@ -18,9 +21,13 @@ beforeEach(async () => {
 });
 
 afterEach(async() => {
+	console.log("After each");
     let conn = typeorm.getConnection();
     return conn.close();
 });
+
+
+console.log("Point 2");
 
 test('We are testing the test...', async () => {    
     let postController = PostController();
@@ -30,6 +37,8 @@ test('We are testing the test...', async () => {
     expect(res.status).toBeCalledWith(200);
     expect(res.json).toBeCalledWith({ "test": "test" });
 });
+
+console.log("Point 3");
 
 test('Should create a new post ', async () => {
 

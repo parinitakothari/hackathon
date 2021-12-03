@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-pod
+spec:
+   replicas: 2
+   selector:
+    matchLabels: 
+     app: user-api
+   template:
+    metadata:
+     labels:
+      app: user-api
+    spec:  
+     containers:
+     - name: user-api
+       image: gcr.io/lloyds-hackathon-team-4/user-api:1.0
+       ports:
+       - containerPort : 3000
+       env:
+       - name: DATABASE_USERNAME
+         valueFrom:
+          secretKeyRef:
+           name: databasesecrets 
+           key: username
+       - name: DATABASE_PASSWORD
+         valueFrom:
+          secretKeyRef:
+           name: databasesecrets
+           key: password
+       - name: DATABASE_NAME
+         valueFrom:
+          secretKeyRef:
+           name: databasesecrets
+           key: database
+       - name: DATABASE_HOST
+         value: "172.29.96.3"
+       - name: DATABASE_PORT
+         value: "5432"
+       imagePullPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:  
+ name: user-svc
+spec:
+ selector: 
+  app: user-api
+ ports:    
+ - port: 80
+   targetPort: 3000
+ type: ClusterIP
+
+

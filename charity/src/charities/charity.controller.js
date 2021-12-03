@@ -56,7 +56,9 @@ function CharityController () {
             conn = typeorm.getConnection();
             charityRepo = await conn.getRepository("Charity");
             //charityfunds = await charityRepo.find({ where : { id: parseInt(id)}, select : ['funds'] });
-            charityfunds = await charityRepo.createQueryBuilder("charity").select(['charity.funds']).getOne();
+            //charityfunds = await charityRepo.createQueryBuilder("charity").select(['charity.funds']).where({'charity.id' = :parseInt(id)}).getOne();
+
+            charityfunds = await charityRepo.createQueryBuilder("charity").select(['charity.funds']).where("charity.id = :id", { id: parseInt(id)}).getOne();
             //return res.status(200).result(charityfunds)
             return res.status(200).json(charityfunds);
         } catch (error) {
@@ -103,6 +105,7 @@ function CharityController () {
             conn = typeorm.getConnection();
             charityRepo = await conn.getRepository("Charity");
             charity = await charityRepo.delete(parseInt(id));
+            //console.log("Value of charity " + json(charity));
             return res.status(200).json(charity);
         } catch (error) {
             return res.status(500).json({ "error": error.message });

@@ -49,6 +49,10 @@ export default {
     proxy: true,
   },
 
+  env: {
+    baseUrl: process.env.BASE_URL || 'http://localhost:3000'
+  },
+
   // INFO: Make sure to set environment variable BASE_URL to the URL of your API backend.  
   proxy: {
     '/api/': {target: process.env.BASE_URL, pathRewrite: {'^/api/': ''}, changeOrigin: true }

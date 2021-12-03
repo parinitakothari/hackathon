@@ -49,19 +49,19 @@ function PostController () {
         }
     }
 
-    // const getPostById = async (req, res) => {
+     const getPostById = async (req, res) => {
 
-    //     const { id } = req.params;
+         const { id } = req.params;
 
-    //     try {
-    //         conn = typeorm.getConnection();
-    //         postRepo = await conn.getRepository("Post");
-    //         post = await postRepo.find({ id: parseInt(id) });
-    //         return res.status(200).json(post);
-    //     } catch (error) {
-    //         return res.status(500).json({ "error": error.message });
-    //     }
-    // }
+         try {
+             conn = typeorm.getConnection();
+             postRepo = await conn.getRepository("Post");
+             post = await postRepo.find({ id: parseInt(id) });
+             return res.status(200).json(post);
+         } catch (error) {
+             return res.status(500).json({ "error": error.message });
+         }
+     }
 
     // const getCharityFundsById = async (req, res) => {
 
@@ -78,6 +78,30 @@ function PostController () {
     //         return res.status(500).json({ "error": error.message });
     //     }
     // }
+
+    const getTopPostsByFunding = async (req, res) => {
+        
+        try {
+            conn = typeorm.getConnection();
+            postRepo = await conn.getRepository("Post");
+            
+            //Uses QueryBuilder to create a Select Query which Orders the results in descending order of "funds" and limits to just 3 results
+            //This is the equivalent of writing SELECT * FROM POST ORDER BY funds DESC LIMIT 3
+
+            returnPosts = await postRepo.createQueryBuilder().orderBy("funds", "DESC").limit(3).getMany();
+            
+            //You can view what the above query returns on the terminal
+            console.log("Top 3 Posts in order of funding : ");
+            console.log(returnPosts);
+
+            return res.status(200).json(returnPosts);
+
+        } catch (error) {
+            console.log(err.message);
+            return res.status(500).json({ "error": error.message });
+        }
+    }
+    
 
     const updatePost = async (req, res) => {
         
@@ -130,7 +154,8 @@ function PostController () {
         updatePost,
         updatePostFunds,
         deletePost,
-        //getPostById
+        getPostById,
+        getTopPostsByFunding
     };
 }
 

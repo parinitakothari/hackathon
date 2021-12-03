@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp-pod
+spec:
+   replicas: 2
+   selector:
+    matchLabels: 
+     app: webapp
+   template:
+    metadata:
+     labels:
+      app: webapp
+    spec:  
+     containers:
+     - name: webapp
+       image: gcr.io/lloyds-hackathon-team-4/webapp:1.0
+       env:
+       - name: BASE_URL
+         value: "http://team4.tipuric.com"
+       ports:
+       - containerPort: 3000
+       imagePullPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:  
+ name: webapp-svc
+spec:
+ selector: 
+  app: webapp
+ ports:    
+ - port: 80
+   targetPort: 3000
+ type: ClusterIP
+
+
