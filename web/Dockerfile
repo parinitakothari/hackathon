@@ -1,6 +1,6 @@
 FROM node:12-alpine
 
-ENV BASE_URL="default-http-backend:80"
+#ENV BASE_URL="default-http-backend:80"
 
 # create destination directory
 #RUN mkdir -p /app
