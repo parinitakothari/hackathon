@@ -22,7 +22,7 @@ env:
   GKE_CLUSTER: shareware-sec-gke    # TODO: update to cluster name
   GKE_ZONE: europe-west2-c   # TODO: update to cluster zone
   DEPLOYMENT_NAME: webapp # TODO: update to deployment name
-  IMAGE: gcr.io/lloyds-hackathon-team-4/webapp:1.0
+  IMAGE: webapp:1.0
 
 jobs:
   setup-build-publish-deploy:
@@ -33,7 +33,8 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-
+     
+  # Setting up Authentication
     - id: auth
       uses: google-github-actions/auth@v0.4.0
       with:
@@ -75,4 +76,3 @@ jobs:
     - name: Publish
       run: |-
         docker push "gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA"
-
