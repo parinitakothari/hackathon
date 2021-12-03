@@ -17,7 +17,7 @@ spec:
        image: gcr.io/lloyds-hackathon-team-4/webapp:1.0
        env:
        - name: BASE_URL
-         value: "http://34.142.94.13"
+         value: "http://team4.tipuric.com"
        ports:
        - containerPort: 3000
        imagePullPolicy: Always
