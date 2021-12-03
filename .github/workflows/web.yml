@@ -22,7 +22,7 @@ env:
   GKE_CLUSTER: shareware-sec-gke    # TODO: update to cluster name
   GKE_ZONE: europe-west2-c   # TODO: update to cluster zone
   DEPLOYMENT_NAME: webapp # TODO: update to deployment name
-  IMAGE: webapp:1.0
+  IMAGE: webapp
 
 jobs:
   setup-build-publish-deploy:
