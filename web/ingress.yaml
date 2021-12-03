@@ -6,6 +6,13 @@ spec:
   rules:
   - http:
       paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: webapp-svc
+            port:
+              number: 80
       - path: /users
         pathType: Prefix
         backend:
